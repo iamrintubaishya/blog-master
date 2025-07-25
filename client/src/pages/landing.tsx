@@ -101,7 +101,7 @@ export default function Landing() {
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-3xl">
             <div className="flex items-center space-x-2 mb-6">
-              <Sparkles className="w-6 h-6 text-yellow-400" />
+              <BookOpen className="w-6 h-6 text-yellow-400" />
               <span className="text-yellow-400 font-medium">Featured Stories</span>
             </div>
 
