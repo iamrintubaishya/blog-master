@@ -1,14 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Search, X } from "lucide-react";
 import { useState } from "react";
 
 export default function PublicHeader() {
   const { isAuthenticated } = useAuth();
+  const [, setLocation] = useLocation();
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setLocation(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch(false);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <header className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 shadow-sm">
@@ -38,7 +48,7 @@ export default function PublicHeader() {
           <div className="flex items-center space-x-4">
             <div className="relative">
               {showSearch ? (
-                <div className="flex items-center space-x-2">
+                <form onSubmit={handleSearch} className="flex items-center space-x-2">
                   <Input
                     type="text"
                     placeholder="Search articles..."
@@ -47,21 +57,23 @@ export default function PublicHeader() {
                     className="w-64 h-9"
                     autoFocus
                   />
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
                     onClick={() => {
                       setShowSearch(false);
                       setSearchQuery("");
                     }}
+                    type="button"
                   >
                     <X className="w-4 h-4" />
                   </Button>
-                </div>
+                  <Button type="submit" hidden /> {/* Hidden submit button for form submission */}
+                </form>
               ) : (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setShowSearch(true)}
                   className="hidden md:flex"
                 >
