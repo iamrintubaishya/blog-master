@@ -4,7 +4,7 @@ export default function PublicFooter() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold text-primary mb-4">ModernBlog</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">BlogMaster</h3>
             <p className="text-secondary text-sm leading-relaxed">
               A platform for sharing knowledge and building community through thoughtful writing.
             </p>
@@ -43,7 +43,7 @@ export default function PublicFooter() {
           </div>
         </div>
         <div className="border-t border-gray-200 mt-8 pt-8 text-center">
-          <p className="text-sm text-secondary">&copy; 2024 ModernBlog. All rights reserved.</p>
+          <p className="text-sm text-secondary">&copy; 2024 BlogMaster. All rights reserved. <a href="/admin-login" className="text-xs opacity-30 hover:opacity-60 transition-opacity">•</a></p>
         </div>
       </div>
     </footer>

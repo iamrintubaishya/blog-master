@@ -19,6 +19,10 @@ function Router() {
         <>
           <Route path="/" component={Landing} />
           <Route path="/post/:slug" component={Post} />
+          <Route path="/admin-login" component={() => {
+            window.location.href = "/api/login";
+            return null;
+          }} />
         </>
       ) : (
         <>

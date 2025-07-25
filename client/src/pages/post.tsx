@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "wouter";
 import { format } from "date-fns";
-import { ArrowLeft, Clock, Eye } from "lucide-react";
+import { ArrowLeft, Clock, Eye, Share2, BookmarkPlus, Heart, MessageCircle, Twitter, Facebook, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -9,9 +9,13 @@ import { Link } from "wouter";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
 import { PostWithAuthorAndCategory } from "@shared/schema";
+import { useState } from "react";
 
 export default function Post() {
   const { slug } = useParams();
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showShareOptions, setShowShareOptions] = useState(false);
 
   const { data: post, isLoading, error } = useQuery<PostWithAuthorAndCategory>({
     queryKey: ["/api/posts", slug],

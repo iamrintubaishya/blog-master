@@ -24,7 +24,7 @@ export default function Landing() {
       <section className="bg-subtle py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6 font-merriweather">
-            Welcome to ModernBlog
+            Welcome to BlogMaster
           </h2>
           <p className="text-xl text-secondary max-w-2xl mx-auto leading-relaxed">
             Discover insightful articles, thoughtful perspectives, and engaging stories from our community of writers.

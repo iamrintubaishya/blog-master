@@ -13,7 +13,7 @@ export default function PublicHeader() {
           <div className="flex items-center space-x-8">
             <Link href="/">
               <h1 className="text-xl font-bold text-primary font-inter cursor-pointer">
-                ModernBlog
+                BlogMaster
               </h1>
             </Link>
             <nav className="hidden md:flex space-x-6">
@@ -35,19 +35,12 @@ export default function PublicHeader() {
             <Button variant="ghost" size="sm" className="hidden md:flex">
               <Search className="w-4 h-4" />
             </Button>
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <Link href="/admin">
                 <Button className="bg-accent hover:bg-accent/90">
                   Dashboard
                 </Button>
               </Link>
-            ) : (
-              <Button 
-                onClick={() => window.location.href = "/api/login"}
-                className="bg-accent hover:bg-accent/90"
-              >
-                Admin Login
-              </Button>
             )}
           </div>
         </div>
