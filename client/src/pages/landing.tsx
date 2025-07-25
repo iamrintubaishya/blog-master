@@ -56,12 +56,6 @@ export default function Landing() {
     );
   });
 
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      window.location.href = `/?search=${encodeURIComponent(query.trim())}`;
-    }
-  };
-
   const handleSuggestionClick = (post: PostWithAuthorAndCategory) => {
     window.location.href = `/post/${post.slug}`;
   };
@@ -117,18 +111,13 @@ export default function Landing() {
             </p>
 
             {/* Search Bar */}
-            <div className="relative max-w-md mb-8">
+            <form onSubmit={handleSearch} className="relative max-w-md mb-8">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
                 type="text"
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={handleInputChange}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSearch(searchQuery);
-                  }
-                }}
                 onFocus={() => setShowSuggestions(searchQuery.trim().length > 0)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 className="pl-12 h-14 text-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-gray-300 focus:bg-white/20"
@@ -156,7 +145,7 @@ export default function Landing() {
                   ))}
                 </div>
               )}
-            </div>
+            </form>
 
             {/* Stats */}
             <div className="flex flex-wrap gap-8">
