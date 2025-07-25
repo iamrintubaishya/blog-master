@@ -17,6 +17,7 @@ export default function Landing() {
   const searchParams = useSearch();
   const urlSearchQuery = new URLSearchParams(searchParams).get('search') || '';
   const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const { data: posts = [], isLoading: postsLoading } = useQuery<PostWithAuthorAndCategory[]>({
     queryKey: ["/api/posts"],
@@ -31,6 +32,18 @@ export default function Landing() {
     setSearchQuery(urlSearchQuery);
   }, [urlSearchQuery]);
 
+  // Filter posts for suggestions
+  const suggestions = searchQuery.trim().length > 0 
+    ? posts.filter(post => {
+        const query = searchQuery.toLowerCase();
+        return (
+          post.title.toLowerCase().includes(query) ||
+          post.excerpt?.toLowerCase().includes(query) ||
+          post.category?.name.toLowerCase().includes(query)
+        );
+      }).slice(0, 5) // Limit to 5 suggestions
+    : [];
+
   // Filter posts based on search query
   const filteredPosts = posts.filter(post => {
     if (!searchQuery.trim()) return true;
@@ -42,6 +55,22 @@ export default function Landing() {
       post.category?.name.toLowerCase().includes(query)
     );
   });
+
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      window.location.href = `/?search=${encodeURIComponent(query.trim())}`;
+    }
+  };
+
+  const handleSuggestionClick = (post: PostWithAuthorAndCategory) => {
+    window.location.href = `/post/${post.slug}`;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSuggestions(value.trim().length > 0);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,9 +123,39 @@ export default function Landing() {
                 type="text"
                 placeholder="Search articles..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleInputChange}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch(searchQuery);
+                  }
+                }}
+                onFocus={() => setShowSuggestions(searchQuery.trim().length > 0)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 className="pl-12 h-14 text-lg bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder:text-gray-300 focus:bg-white/20"
               />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-64 overflow-y-auto">
+                  {suggestions.map((post) => (
+                    <div
+                      key={post.id}
+                      onClick={() => handleSuggestionClick(post)}
+                      className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    >
+                      <div className="text-sm font-medium text-gray-900 truncate">
+                        {post.title}
+                      </div>
+                      <div className="text-xs text-gray-500 truncate mt-1">
+                        {post.excerpt}
+                      </div>
+                      {post.category && (
+                        <div className="text-xs text-blue-600 font-medium mt-1">
+                          {post.category.name}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Stats */}
